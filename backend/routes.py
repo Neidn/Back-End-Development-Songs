@@ -132,12 +132,12 @@ def create_song():
 @app.route("/song/<int:song_id>", methods=["PUT"])
 def update_song(song_id):
     """Update an existing song"""
-    if not request.json:
-        abort(400, "Bad Request")
-
-    song = request.get_json()
-    if song["id"] < 0:
-        abort(400, "Bad Request")
+    # if not request.json:
+    #     abort(400, "Bad Request")
+    #
+    # song = request.get_json()
+    # if song["id"] < 0:
+    #     abort(400, "Bad Request")
 
     # ori_song = db.songs.find_one({"id": song_id})
     # if not ori_song:
