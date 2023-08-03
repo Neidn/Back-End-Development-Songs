@@ -139,18 +139,15 @@ def update_song(song_id):
     if song["id"] < 0:
         abort(400, "Bad Request")
 
-    ori_song = db.songs.find_one({"id": song_id})
-    if not ori_song:
-        return make_response(jsonify({"message": "song not found"}), 404)
+    # ori_song = db.songs.find_one({"id": song_id})
+    # if not ori_song:
+    #     return make_response(jsonify({"message": "song not found"}), 404)
 
     # # Check if the song is changed or not
     # # Compare All the fields
     # if ori_song["id"] == song["id"] and \
-    #         ori_song["artist"] == song["artist"] and \
     #         ori_song["title"] == song["title"] and \
-    #         ori_song["difficulty"] == song["difficulty"] and \
-    #         ori_song["level"] == song["level"] and \
-    #         ori_song["released"] == song["released"]:
+    #         ori_song["lyrics"] == song["lyrics"]:
     #     return make_response(jsonify({"message": "song found, but nothing updated"}), 200)
     #
     # # Update the song
