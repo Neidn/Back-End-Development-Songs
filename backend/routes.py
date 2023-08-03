@@ -136,26 +136,19 @@ def update_song(song_id):
         abort(400, "Bad Request")
 
     song = request.get_json()
-    if song["id"] < 0:
+    if song_id < 0:
         abort(400, "Bad Request")
 
-    return make_response(jsonify(
-        {
-            "updated id": {'$oid': str(song['_id'])},
-        }
-    ), 200)
+    ori_song = db.songs.find_one({"id": song_id})
+    if not ori_song:
+        return make_response(jsonify({"message": "song not found"}), 404)
 
-    # ori_song = db.songs.find_one({"id": song_id})
-    # if not ori_song:
-    #     return make_response(jsonify({"message": "song not found"}), 404)
+    # Check if the song is changed or not
+    # Compare All the fields
+    if ori_song["title"] == song["title"] and \
+            ori_song["lyrics"] == song["lyrics"]:
+        return make_response(jsonify({"message": "song found, but nothing updated"}), 200)
 
-    # # Check if the song is changed or not
-    # # Compare All the fields
-    # if ori_song["id"] == song["id"] and \
-    #         ori_song["title"] == song["title"] and \
-    #         ori_song["lyrics"] == song["lyrics"]:
-    #     return make_response(jsonify({"message": "song found, but nothing updated"}), 200)
-    #
-    # # Update the song
-    # db.songs.update_one({"id": song_id}, {"$set": song})
-    # return make_response(jsonify(song), 200)
+    # Update the song
+    db.songs.update_one({"id": song_id}, {"$set": song})
+    return make_response(jsonify(song), 200)
