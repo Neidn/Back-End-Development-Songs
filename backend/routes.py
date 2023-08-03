@@ -151,4 +151,4 @@ def update_song(song_id):
 
     # Update the song
     result = db.songs.update_one({"id": song_id}, {"$set": song})
-    return make_response(jsonify(result), 200)
+    return make_response(result, 200)
