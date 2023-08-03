@@ -87,3 +87,15 @@ def get_songs():
         return make_response(jsonify(parse_json(songs)), 200)
     else:
         return make_response(jsonify(status="Not Found"), 404)
+
+
+# GET /song/<id>
+# Returns: 200 OK, 404 Not Found
+@app.route("/song/<int:song_id>", methods=["GET"])
+def get_song(song_id):
+    """Retrieve a single song"""
+    song = db.songs.find_one({"id": song_id})
+    if song:
+        return make_response(jsonify(parse_json(song)), 200)
+    else:
+        return make_response(jsonify(status="Not Found"), 404)
