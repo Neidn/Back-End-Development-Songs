@@ -99,3 +99,22 @@ def get_song(song_id):
         return make_response(jsonify(parse_json(song)), 200)
     else:
         return make_response(jsonify(status="Not Found"), 404)
+
+
+# POST /song
+# Returns: 201 Created, 400 Bad Request, 302 Found
+@app.route("/song", methods=["POST"])
+def create_song():
+    """Create a new song"""
+    if not request.json:
+        abort(400, "Bad Request")
+
+    song = request.get_json()
+    if song["id"] < 0:
+        abort(400, "Bad Request")
+
+    if db.songs.find_one({"id": song["id"]}):
+        return make_response(jsonify(status="Found"), 302)
+    else:
+        db.songs.insert_one(song)
+        return make_response(jsonify(parse_json(song)), 201)
