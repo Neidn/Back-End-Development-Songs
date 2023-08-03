@@ -75,3 +75,15 @@ def count():
     """Count the number of songs"""
     cnt = db.songs.count_documents({})
     return make_response(jsonify(count=cnt), 200)
+
+
+# GET /song
+# Returns: 200 OK, 404 Not Found
+@app.route("/song", methods=["GET"])
+def get_songs():
+    """Retrieve a list of songs"""
+    songs = db.songs.find({})
+    if songs:
+        return make_response(jsonify(parse_json(songs)), 200)
+    else:
+        return make_response(jsonify(status="Not Found"), 404)
