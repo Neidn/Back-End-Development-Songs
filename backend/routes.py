@@ -114,7 +114,14 @@ def create_song():
         abort(400, "Bad Request")
 
     if db.songs.find_one({"id": song["id"]}):
-        return make_response(jsonify(status="Found"), 302)
+        return make_response(jsonify(
+            {"Message": f"song with id {song['id']} already present"}
+        ), 302)
     else:
         db.songs.insert_one(song)
-        return make_response(jsonify(parse_json(song)), 201)
+
+        return make_response(jsonify(
+            {
+                "inserted id": {'$oid': str(song['_id'])},
+            }
+        ), 201)
