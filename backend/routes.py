@@ -152,3 +152,16 @@ def update_song(song_id):
     # Update the song
     db.songs.update_one({"id": song_id}, {"$set": song})
     return get_song(song_id)
+
+
+# DELETE /song/<id>
+# Returns: 204 No Content, 404 Not Found
+@app.route("/song/<int:song_id>", methods=["DELETE"])
+def delete_song(song_id):
+    """Delete a song"""
+    song = db.songs.find_one({"id": song_id})
+    if song:
+        db.songs.delete_one({"id": song_id})
+        return make_response((), 204)
+    else:
+        return make_response(jsonify({"message": "song not found"}), 404)
