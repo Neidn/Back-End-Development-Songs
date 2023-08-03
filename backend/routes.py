@@ -23,7 +23,7 @@ mongodb_port = os.environ.get('MONGODB_PORT')
 
 print(f'The value of MONGODB_SERVICE is: {mongodb_service}')
 
-if mongodb_service == None:
+if mongodb_service is None:
     app.logger.error('Missing MongoDB server in the MONGODB_SERVICE variable')
     # abort(500, 'Missing MongoDB server in the MONGODB_SERVICE variable')
     sys.exit(1)
@@ -33,21 +33,36 @@ if mongodb_username and mongodb_password:
 else:
     url = f"mongodb://{mongodb_service}"
 
-
 print(f"connecting to url: {url}")
+
+client = None
 
 try:
     client = MongoClient(url)
 except OperationFailure as e:
     app.logger.error(f"Authentication error: {str(e)}")
 
+if client is None:
+    app.logger.error('MongoDB connection error')
+    # abort(500, 'MongoDB connection error')
+    sys.exit(1)
+
 db = client.songs
 db.songs.drop()
 db.songs.insert_many(songs_list)
 
+
 def parse_json(data):
     return json.loads(json_util.dumps(data))
+
 
 ######################################################################
 # INSERT CODE HERE
 ######################################################################
+
+# GET /health
+# Returns: 200 OK
+@app.route("/health")
+def health():
+    """Check the service health"""
+    return make_response(jsonify(status="OK"), 200)
