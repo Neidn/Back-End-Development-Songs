@@ -143,16 +143,16 @@ def update_song(song_id):
     if not ori_song:
         return make_response(jsonify({"message": "song not found"}), 404)
 
-    # Check if the song is changed or not
-    # Compare All the fields
-    if ori_song["id"] == song["id"] and \
-            ori_song["artist"] == song["artist"] and \
-            ori_song["title"] == song["title"] and \
-            ori_song["difficulty"] == song["difficulty"] and \
-            ori_song["level"] == song["level"] and \
-            ori_song["released"] == song["released"]:
-        return make_response(jsonify({"message": "song found, but nothing updated"}), 200)
-
-    # Update the song
-    db.songs.update_one({"id": song_id}, {"$set": song})
-    return make_response(jsonify(song), 200)
+    # # Check if the song is changed or not
+    # # Compare All the fields
+    # if ori_song["id"] == song["id"] and \
+    #         ori_song["artist"] == song["artist"] and \
+    #         ori_song["title"] == song["title"] and \
+    #         ori_song["difficulty"] == song["difficulty"] and \
+    #         ori_song["level"] == song["level"] and \
+    #         ori_song["released"] == song["released"]:
+    #     return make_response(jsonify({"message": "song found, but nothing updated"}), 200)
+    #
+    # # Update the song
+    # db.songs.update_one({"id": song_id}, {"$set": song})
+    # return make_response(jsonify(song), 200)
