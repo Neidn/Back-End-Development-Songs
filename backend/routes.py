@@ -125,3 +125,30 @@ def create_song():
                 "inserted id": {'$oid': str(song['_id'])},
             }
         ), 201)
+
+
+# PUT /song/<id>
+# Returns: 201 Created, 400 Bad Request, 404 Not Found
+@app.route("/song/<int:song_id>", methods=["PUT"])
+def update_song(song_id):
+    """Update an existing song"""
+    if not request.json:
+        abort(400, "Bad Request")
+
+    song = request.get_json()
+    if song["id"] < 0:
+        abort(400, "Bad Request")
+
+    if db.songs.find_one({"id": song_id}):
+        db.songs.update_one({"id": song_id}, {"$set": song})
+        return make_response(jsonify(
+            {
+                "updated id": song_id,
+            }
+        ), 201)
+    else:
+        return make_response(jsonify(
+            {
+                "Message": f"song with id {song_id} not found",
+            }
+        ), 404)
