@@ -150,5 +150,5 @@ def update_song(song_id):
         return make_response(jsonify({"message": "song found, but nothing updated"}), 200)
 
     # Update the song
-    result = db.songs.update_one({"id": song_id}, {"$set": song})
-    return make_response(result, 200)
+    db.songs.update_one({"id": song_id}, {"$set": song})
+    return get_song(song_id)
