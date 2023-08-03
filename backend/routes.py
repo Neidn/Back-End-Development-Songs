@@ -162,6 +162,6 @@ def delete_song(song_id):
     song = db.songs.find_one({"id": song_id})
     if song:
         db.songs.delete_one({"id": song_id})
-        return make_response((), 204)
+        return make_response(jsonify({}), 204)
     else:
         return make_response(jsonify({"message": "song not found"}), 404)
