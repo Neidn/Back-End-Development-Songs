@@ -66,3 +66,12 @@ def parse_json(data):
 def health():
     """Check the service health"""
     return make_response(jsonify(status="OK"), 200)
+
+
+# GET /count
+# Returns: 200 OK
+@app.route("/count")
+def count():
+    """Count the number of songs"""
+    cnt = db.songs.count_documents({})
+    return make_response(jsonify(count=cnt), 200)
